@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npm install:*)",
       "Bash(npm run:*)",
-      "Bash(curl -s http://localhost:11434/api/tags)"
+      "Bash(curl -s http://localhost:11434/api/tags)",
+      "Bash(node -e \"const b=require\\(''bcryptjs''\\);b.hash\\(''admin123'',10\\).then\\(console.log\\)\")"
     ]
   }
 }

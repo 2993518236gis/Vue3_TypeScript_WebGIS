@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "cesium": "^1.140.0",
+    "ol": "^10.8.0",
     "pinia": "^2.1.0",
     "vite-plugin-cesium": "^1.2.23",
     "vue": "^3.4.0",

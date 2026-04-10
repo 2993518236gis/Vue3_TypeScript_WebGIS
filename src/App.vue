@@ -1,25 +1,51 @@
 <template>
   <div id="app-root">
-    <header class="topbar">
+    <header v-if="!isLoginPage" class="topbar">
       <div class="topbar-brand">🌍 Vue3 + Typescript + WebGIS 地图展示系统</div>
+      <div class="topbar-right">
+        <span class="topbar-user">{{ currentUser }}</span>
+        <button class="logout-btn" @click="logout">退出系统</button>
+      </div>
     </header>
-    <div class="body-row">
+    <div v-if="!isLoginPage" class="body-row">
       <nav class="sidebar">
         <ul class="sidebar-links">
           <li><RouterLink to="/"><span class="nav-icon">🏠</span><span class="nav-text">首页</span></RouterLink></li>
-          <li><RouterLink to="/about"><span class="nav-icon">🗺️</span><span class="nav-text">地图门户</span></RouterLink></li>
-          <li><RouterLink to="/counter"><span class="nav-icon">🌍</span><span class="nav-text">Cesium</span></RouterLink></li>
+          <li><RouterLink to="/map"><span class="nav-icon">🗺️</span><span class="nav-text">地图门户</span></RouterLink></li>
+          <li><RouterLink to="/cesium"><span class="nav-icon">🌍</span><span class="nav-text">Cesium</span></RouterLink></li>
         </ul>
       </nav>
       <main class="main-content">
         <RouterView />
       </main>
     </div>
+    <RouterView v-if="isLoginPage" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { computed } from 'vue'
+import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+
+const isLoginPage = computed(() => route.name === 'login')
+
+const currentUser = computed(() => {
+  const raw = sessionStorage.getItem('user')
+  if (!raw) return ''
+  try {
+    return JSON.parse(raw).username
+  } catch {
+    return ''
+  }
+})
+
+function logout() {
+  sessionStorage.removeItem('user')
+  router.push('/login')
+}
 </script>
 
 <style scoped>
@@ -45,6 +71,7 @@ import { RouterLink, RouterView } from 'vue-router'
   flex-shrink: 0;
   border-bottom: 2px solid #42b883;
   z-index: 100;
+  justify-content: space-between;
 }
 
 .topbar-brand {
@@ -52,6 +79,33 @@ import { RouterLink, RouterView } from 'vue-router'
   font-weight: 700;
   color: #42b883;
   letter-spacing: 0.03em;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topbar-user {
+  font-size: 0.9rem;
+  color: #8a9bb0;
+}
+
+.logout-btn {
+  padding: 0.35rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(255, 107, 107, 0.5);
+  border-radius: 4px;
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 107, 107, 0.1);
+  border-color: #ff6b6b;
 }
 
 .body-row {
