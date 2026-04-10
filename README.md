@@ -2,5 +2,11 @@
 Vue3+TypeScript+WebGIS 地图展示系统
 
 ## 🚀 演示效果
-# 1.绘制点线面
+登录界面
+<img width="1784" height="1307" alt="image" src="https://github.com/user-attachments/assets/5035b5f1-b0d0-480a-abc5-79fc6808ef0c" />
+
+绘制点线面
 ![demo1](https://github.com/user-attachments/assets/7ca236ad-82b8-4aa3-aea1-bd3633212b43)
+
+小车沿着轨迹行驶
+<img width="1798" height="981" alt="image" src="https://github.com/user-attachments/assets/c89d56a4-3c74-487c-97d1-0993f43e6683" />
