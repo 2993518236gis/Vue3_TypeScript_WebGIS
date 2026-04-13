@@ -145,7 +145,10 @@ function getPosAndHpr(dist: number): { pos: Cesium.Cartesian3; hpr: Cesium.Headi
       const carto = Cesium.Cartographic.fromCartesian(pos)
       altitudeDisplay.value = Math.round(carto.height)
 
-      return { pos, hpr: new Cesium.HeadingPitchRoll(heading, pitch, 0) }
+      // Cesium_Air.glb 模型头部朝 +Y（北），headingPitchRollQuaternion 以 +X（东）为前向
+      // 补偿 -90° 使机头始终指向运动方向
+      const headingFixed = heading - Cesium.Math.toRadians(90)
+      return { pos, hpr: new Cesium.HeadingPitchRoll(headingFixed, pitch, 0) }
     }
     d -= seg.length
   }
@@ -185,7 +188,7 @@ function initEntities() {
     }
   })
 
-  // 飞机实体（用飞机图标 Billboard 模拟，Cesium Ion 不依赖 glb）
+  // 飞机实体（加载 Cesium_Air.glb 3D 模型）
   planeEntity = viewer.entities.add({
     position: new Cesium.CallbackProperty(
       () => getPosAndHpr(traveledDist).pos, false) as any,
@@ -193,20 +196,16 @@ function initEntities() {
       const { pos, hpr } = getPosAndHpr(traveledDist)
       return Cesium.Transforms.headingPitchRollQuaternion(pos, hpr)
     }, false) as any,
-    // 机身用 box 近似（宽 60m、长 50m、高 10m）
-    box: {
-      dimensions: new Cesium.Cartesian3(50, 60, 10),
-      material: Cesium.Color.fromCssColorString('#d0e8ff').withAlpha(0.9),
-      outline: true,
-      outlineColor: Cesium.Color.WHITE.withAlpha(0.6)
-    },
-    // 机翼
-    ellipse: {
-      semiMajorAxis: 40,
-      semiMinorAxis: 5,
-      material: Cesium.Color.fromCssColorString('#a0c4ff').withAlpha(0.85),
-      height: 0,
-      heightReference: Cesium.HeightReference.NONE
+    // 加载 GLB 飞机模型
+    model: {
+      uri: '/models/CesiumAir/Cesium_Air.glb',
+      minimumPixelSize: 64,          // 最小屏幕像素，保证远处也可见
+      maximumScale: 20000,           // 最大缩放上限
+      scale: 3.0,                    // 模型缩放倍数
+      silhouetteColor: Cesium.Color.WHITE,
+      silhouetteSize: 1.0,
+      colorBlendMode: Cesium.ColorBlendMode.MIX,
+      colorBlendAmount: 0.3
     },
     label: {
       text: '✈ CA1234',
@@ -303,7 +302,7 @@ const overviewCamera = () => {
   following.value = false
   viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY)
   viewer.camera.flyTo({
-    destination: Cesium.Cartesian3.fromDegrees(119.0, 35.5, 2_500_000),
+    destination: Cesium.Cartesian3.fromDegrees(120.0, 19.5, 2_000_000),
     orientation: { heading: 0, pitch: Cesium.Math.toRadians(-50), roll: 0 },
     duration: 1.5
   })
@@ -315,11 +314,10 @@ onMounted(() => {
     navigationHelpButton: false,
     creditContainer: document.createElement('div'),
     animation: false,
-    timeline: false,
-    baseLayerPicker: false
+    timeline: false  
   })
   buildSegs()
-  overviewCamera()
+  // overviewCamera()
 })
 
 onUnmounted(() => {
@@ -332,9 +330,12 @@ onUnmounted(() => {
 
 <style scoped>
 .models-page {
-  width: 100%;
-  height: 100%;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
 }
 
 #cesiumModelsContainer {

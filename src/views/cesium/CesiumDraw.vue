@@ -159,6 +159,7 @@ function initCarEntities() {
       startPos, new Cesium.HeadingPitchRoll(-Math.PI / 2, 0, 0)) as any,
     model: {
       uri: '/models/CesiumMilkTruck/CesiumMilkTruck.glb',
+      // uri: '/models/CesiumAir/Cesium_Air.glb',
       minimumPixelSize: 64,
       maximumScale: 200,
       silhouetteColor: Cesium.Color.WHITE,

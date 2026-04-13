@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from 'node:url'
 import cesium from 'vite-plugin-cesium'
 
 export default defineConfig({
+  base: '/Vue3_TypeScript_WebGIS/',
   // server: {
   //   port: 8080
   // },

@@ -37,6 +37,24 @@ const router = createRouter({
           component: () => import('@/views/cesium/CesiumModels.vue')
         }
       ]
+    },
+    {
+      path: '/openlayers',
+      name: 'openlayers',
+      component: () => import('@/views/openlayers/OLLayout.vue'),
+      redirect: '/openlayers/map',
+      children: [
+        {
+          path: 'map',
+          name: 'ol-map',
+          component: () => import('@/views/openlayers/OLBasicMap.vue')
+        },
+        {
+          path: 'draw',
+          name: 'ol-draw',
+          component: () => import('@/views/openlayers/OLDraw.vue')
+        }
+      ]
     }
   ]
 })
