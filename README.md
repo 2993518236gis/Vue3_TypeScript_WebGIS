@@ -10,3 +10,7 @@ Vue3+TypeScript+WebGIS 地图展示系统
 
 小车沿着轨迹行驶
 <img width="1798" height="981" alt="image" src="https://github.com/user-attachments/assets/c89d56a4-3c74-487c-97d1-0993f43e6683" />
+
+深圳市学校热力图（初中）
+![Uploading image.png…]()
+
