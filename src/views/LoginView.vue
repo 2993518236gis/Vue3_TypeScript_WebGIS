@@ -13,9 +13,7 @@
           <input v-model="password" type="password" placeholder="请输入密码" autocomplete="current-password" />
         </div>
         <div v-if="errorMsg" class="error-msg">{{ errorMsg }}</div>
-        <button type="submit" :disabled="loading">
-          {{ loading ? '登录中...' : '登 录' }}
-        </button>
+        <button type="submit">登 录</button>
       </form>
     </div>
   </div>
@@ -29,33 +27,24 @@ const router = useRouter()
 const username = ref('')
 const password = ref('')
 const errorMsg = ref('')
-const loading = ref(false)
 
-async function handleLogin() {
+const USERS: Record<string, string> = {
+  admin: '123456',
+  guest: '123456',
+}
+
+function handleLogin() {
   errorMsg.value = ''
   if (!username.value || !password.value) {
     errorMsg.value = '请输入用户名和密码'
     return
   }
-  loading.value = true
-  try {
-    const res = await fetch('http://localhost:3001/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username.value, password: password.value })
-    })
-    const data = await res.json()
-    if (data.success) {
-      sessionStorage.setItem('user', JSON.stringify(data.user))
-      router.push('/')
-    } else {
-      errorMsg.value = data.message || '登录失败'
-    }
-  } catch {
-    errorMsg.value = '无法连接到服务器，请确认后端已启动'
-  } finally {
-    loading.value = false
+  if (USERS[username.value] !== password.value) {
+    errorMsg.value = '用户名或密码错误'
+    return
   }
+  sessionStorage.setItem('user', JSON.stringify({ username: username.value }))
+  router.push('/')
 }
 </script>
 

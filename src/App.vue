@@ -13,6 +13,7 @@
           <li><RouterLink to="/"><span class="nav-icon">🏠</span><span class="nav-text">首页</span></RouterLink></li>
           <li><RouterLink to="/map"><span class="nav-icon">🗺️</span><span class="nav-text">地图门户</span></RouterLink></li>
           <li><RouterLink to="/openlayers"><span class="nav-icon">🗾</span><span class="nav-text">OpenLayers</span></RouterLink></li>
+          <li><RouterLink to="/mapbox"><span class="nav-icon">📦</span><span class="nav-text">Mapbox</span></RouterLink></li>
           <li><RouterLink to="/cesium"><span class="nav-icon">🌍</span><span class="nav-text">Cesium</span></RouterLink></li>
         </ul>
       </nav>

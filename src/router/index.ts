@@ -39,6 +39,39 @@ const router = createRouter({
       ]
     },
     {
+      path: '/mapbox',
+      name: 'mapbox',
+      component: () => import('@/views/mapbox/MapboxLayout.vue'),
+      redirect: '/mapbox/basic',
+      children: [
+        {
+          path: 'basic',
+          name: 'mapbox-basic',
+          component: () => import('@/views/mapbox/MapboxBasicMap.vue')
+        },
+        {
+          path: 'draw',
+          name: 'mapbox-draw',
+          component: () => import('@/views/mapbox/MapboxDraw.vue')
+        },
+        {
+          path: '3d',
+          name: 'mapbox-3d',
+          component: () => import('@/views/mapbox/Mapbox3D.vue')
+        },
+        {
+          path: 'poi',
+          name: 'mapbox-poi',
+          component: () => import('@/views/mapbox/MapboxPOI.vue')
+        },
+        {
+          path: 'heatmap',
+          name: 'mapbox-heatmap',
+          component: () => import('@/views/mapbox/MapboxHeatmap.vue')
+        }
+      ]
+    },
+    {
       path: '/openlayers',
       name: 'openlayers',
       component: () => import('@/views/openlayers/OLLayout.vue'),
